@@ -11,11 +11,18 @@ Automate::Automate(std::string chaine) {
 void Automate::lecture(void) {
 	Symbole * s;
 	while( *(s=lex->Consulter()) != FIN) {
-		// s->Affiche();
 		pileSymbole.push(s);
-		pile.top()->transition(this, s);
+#ifdef VERBOSE
+		cout << "Transition pour : ";
+		pileSymbole.top()->affiche();
+		cout << endl;
+#endif
+		pile.top()->transition(this, pileSymbole.top());
 		lex->Avancer();
+		no_read = false;
 	}
+	pileSymbole.push(s);
+	pile.top()->transition(this, pileSymbole.top());
 }
 
 void Automate::push_etat(Etat * e) {
@@ -26,7 +33,27 @@ void Automate::push_symbole(Symbole * s) {
 	pileSymbole.push(s);
 }
 
-void Automate::accepter() {
+Etat * Automate::pop_etat() {
+	Etat * tmp = pile.top();
+	pile.pop();
+	return tmp;
+}
+
+Symbole * Automate::pop_symbole() {
+	Symbole * tmp = pileSymbole.top();
 	pileSymbole.pop();
-	cout << "Resultat = " << int(*pileSymbole.top()) << endl;
+	return tmp;
+}
+
+void Automate::accepter() {
+	//pileSymbole.pop();
+	cout << "Resultat = " << resultat << endl;
+}
+
+void Automate::set_resultat(int r) {
+	resultat = r;
+}
+
+void Automate::noRead() {
+	no_read = true;
 }

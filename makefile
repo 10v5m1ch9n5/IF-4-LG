@@ -1,5 +1,5 @@
 CC := g++
-CPPFLAGS := -Wall
+CPPFLAGS := -Wall -DVERBOSE
 
 anal.elf: main.o lexer.o symbole.o automate.o etat.o
 	$(CC) -o $@ $^

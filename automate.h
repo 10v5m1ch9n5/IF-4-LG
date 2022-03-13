@@ -12,11 +12,18 @@ class Automate {
 		void lecture(void);
 		void push_etat(Etat*);
 		void push_symbole(Symbole*);
+		Etat * pop_etat(void);
+		Symbole * pop_symbole(void);
 		void accepter(void);
+		void set_resultat(int);
+		void noRead(void);
+		Lexer * getLexer(void) {return lex;};
 	protected:
 		std::stack<Etat*> pile;
 		std::stack<Symbole*> pileSymbole;
 		Lexer * lex;
+		int resultat;
+		bool no_read = false;
 };
 
 #endif
