@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LEXER_H
+#define LEXER_H
 
 #include <string>
 #include "symbole.h"
@@ -18,3 +19,5 @@ class Lexer {
       long unsigned int tete;
       Symbole * tampon;
 };
+
+#endif

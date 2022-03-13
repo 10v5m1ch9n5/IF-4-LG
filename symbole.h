@@ -1,11 +1,12 @@
-#pragma once
+#ifndef SYMBOLE_H
+#define SYMBOLE_H
 
 #include <string>
 using namespace std;
 
-enum Identificateurs { OPENPAR, CLOSEPAR, PLUS, MULT, INT, FIN, ERREUR };
+enum Identificateurs { OPENPAR, CLOSEPAR, PLUS, MULT, INT, EXP, FIN, ERREUR };
 
-const string Etiquettes[] = { "OPENPAR", "CLOSEPAR", "PLUS", "MULT", "INT", "FIN", "ERREUR" };
+const string Etiquettes[] = { "OPENPAR", "CLOSEPAR", "PLUS", "MULT", "INT", "EXP", "FIN", "ERREUR" };
 
 class Symbole {
    public:
@@ -27,3 +28,12 @@ class Entier : public Symbole {
       int valeur;
 };
 
+class Expr : public Symbole {
+	public:
+		Expr(int val): Symbole(EXP), valeur(val) {}
+		~Expr() {}
+	protected:
+		int valeur;
+};
+
+#endif
