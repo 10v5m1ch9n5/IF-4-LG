@@ -20,6 +20,9 @@ void Automate::lecture(void) {
 	}
 #ifdef VERBOSE
 	cout << "Sortie boucle main !" << endl;
+cout << "Transition pour : ";
+	pileSymbole.top()->affiche();
+	cout << endl;
 #endif
 	pile.top()->transition(this, pileSymbole.top());
 }

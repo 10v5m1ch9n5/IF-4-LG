@@ -35,6 +35,7 @@ class Expr : public Symbole {
 	public:
 		Expr(int val): Symbole(EXP, false), valeur(val) {}
 		~Expr() {}
+		int get_val() {return valeur;}
 	protected:
 		int valeur;
 };
