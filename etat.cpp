@@ -200,7 +200,6 @@ void E6::transition(Automate * a, Symbole * s) {
 #endif
 			a->push_etat(new E9);
 			a->getLexer()->Avancer();
-			// a->push_symbole(a->getLexer()->Consulter());
 			break;
 		default:
 			std::cerr << "E6: default" << std::endl;
@@ -234,7 +233,14 @@ void E7::transition(Automate * a, Symbole * s) {
 			a->set_resultat(somme);
 			break;
 		case MULT:
-			// TODO
+#ifdef VERBOSE
+			std::cout << "E7: Empile E5" << std::endl;
+#endif
+			a->push_etat(new E5);
+			a->push_symbole(a->getLexer()->Consulter());
+			a->getLexer()->Avancer();
+			a->push_symbole(a->getLexer()->Consulter());
+			break;
 		default:
 			std::cerr << "E7: default" << endl;
 			a->kill();
@@ -245,6 +251,9 @@ void E8::transition(Automate * a, Symbole * s) {
 	Symbole * next = a->getLexer()->Consulter();
 	Expr * facteur1;
 	Expr * facteur2;
+	Symbole * s1;
+	Symbole * s2;
+	Symbole * s3;
 	int produit;
 	switch(int(*next)) {
 		case PLUS:
@@ -259,9 +268,12 @@ void E8::transition(Automate * a, Symbole * s) {
 			a->pop_etat();
 			a->pop_etat();
 			a->pop_etat();
-			facteur1 = dynamic_cast<Expr*>(a->pop_symbole());
-			a->pop_symbole();
-			facteur2 = dynamic_cast<Expr*>(a->pop_symbole());
+			s1 = a->pop_symbole();
+			s2 = a->pop_symbole();
+			s3 = a->pop_symbole();
+			facteur1 = dynamic_cast<Expr*>(s1);
+			facteur2 = dynamic_cast<Expr*>(s3);
+
 
 			produit = facteur1->get_val()*facteur2->get_val();
 			a->push_symbole(new Expr(produit));

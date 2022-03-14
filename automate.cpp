@@ -50,7 +50,10 @@ Symbole * Automate::pop_symbole() {
 }
 
 void Automate::accepter() {
-	cout << "Resultat = " << resultat << endl;
+#ifdef VERBOSE
+	cout << "Resultat = ";
+#endif	
+	cout << resultat << endl;
 }
 
 void Automate::set_resultat(int r) {
