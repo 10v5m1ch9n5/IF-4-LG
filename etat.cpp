@@ -148,7 +148,33 @@ void E4::transition(Automate * a, Symbole * s) {
 }
 
 void E5::transition(Automate * a, Symbole * s) {
-	switch(int(*s)) {}
+	switch(int(*s)) {
+		case INT:
+			a->push_etat(new E3);
+			a->getLexer()->Avancer();
+#ifdef VERBOSE
+			std::cout << "E5: Empile E3" << std::endl;
+#endif
+			break;
+		case OPENPAR:
+			a->push_etat(new E2);
+			a->getLexer()->Avancer();
+			a->push_symbole(a->getLexer()->Consulter());
+#ifdef VERBOSE
+			std::cout << "E5: Empile E2" << std::endl;
+#endif
+			break;
+		case EXP:
+			a->push_etat(new E8);
+			a->getLexer()->Avancer();
+#ifdef VERBOSE
+			std::cout << "E5: Empile E8" << std::endl;
+#endif
+			break;
+		default:
+			std::cerr << "E5: default" << std::endl;
+			a->kill();
+	}
 }
 
 void E6::transition(Automate * a, Symbole * s) {
@@ -208,14 +234,42 @@ void E7::transition(Automate * a, Symbole * s) {
 			a->push_symbole(new Expr(somme));
 			a->set_resultat(somme);
 			break;
+		case MULT:
+			// TODO
 		default:
 			std::cerr << "E7: default" << endl;
 			a->kill();
 	}
 }
+
 void E8::transition(Automate * a, Symbole * s) {
-	switch(int(*s)) {}
+	Symbole * next = a->getLexer()->Consulter();
+	Expr * facteur1;
+	Expr * facteur2;
+	int produit;
+	switch(int(*next)) {
+		case PLUS:
+		case MULT:
+		case CLOSEPAR:
+		case FIN:
+#ifdef VERBOSE
+			std::cout << "E8: reduction pour : ";
+			next->affiche();
+			std::cout << std::endl;
+#endif
+			a->pop_etat();
+			a->pop_etat();
+			a->pop_etat();
+			facteur1 = dynamic_cast<Expr*>(a->pop_symbole());
+			a->pop_symbole();
+			facteur2 = dynamic_cast<Expr*>(a->pop_symbole());
+
+			produit = facteur1->get_val()*facteur2->get_val();
+			a->push_symbole(new Expr(produit));
+			a->set_resultat(produit);
+	}
 }
+
 void E9::transition(Automate * a, Symbole * s) {
 	Expr * val;
 	Symbole * next = a->getLexer()->Consulter();
