@@ -166,7 +166,6 @@ void E5::transition(Automate * a, Symbole * s) {
 			break;
 		case EXP:
 			a->push_etat(new E8);
-			a->getLexer()->Avancer();
 #ifdef VERBOSE
 			std::cout << "E5: Empile E8" << std::endl;
 #endif
