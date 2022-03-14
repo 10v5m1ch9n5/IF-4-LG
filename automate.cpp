@@ -13,6 +13,8 @@ void Automate::lecture(void) {
 #ifdef VERBOSE
 		cout << "Transition pour : ";
 		pileSymbole.top()->affiche();
+		// cout << " | ";
+		// pile.top()->affiche();
 		cout << endl;
 #endif
 		pile.top()->transition(this, pileSymbole.top());
@@ -48,7 +50,6 @@ Symbole * Automate::pop_symbole() {
 }
 
 void Automate::accepter() {
-	//pileSymbole.pop();
 	cout << "Resultat = " << resultat << endl;
 }
 

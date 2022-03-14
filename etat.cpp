@@ -21,7 +21,6 @@ void E0::transition(Automate * a, Symbole * s) {
 			break;
 		case EXP:
 			a->push_etat(new E1);
-			a->getLexer()->Avancer();
 			a->push_symbole(a->getLexer()->Consulter());
 #ifdef VERBOSE
 			std::cout << "E0: Empile E1" << std::endl;
@@ -37,12 +36,16 @@ void E1::transition(Automate * a, Symbole * s) {
 	switch(int(*s)) {
 		case PLUS:
 			a->push_etat(new E4);
+			a->getLexer()->Avancer();
+			a->push_symbole(a->getLexer()->Consulter());
 #ifdef VERBOSE
 			std::cout << "E1: Empile E4" << std::endl;
 #endif
 			break;
 		case MULT:
 			a->push_etat(new E5);
+			a->getLexer()->Avancer();
+			a->push_symbole(a->getLexer()->Consulter());
 #ifdef VERBOSE
 			std::cout << "E1: Empile E5" << std::endl;
 #endif
@@ -116,11 +119,39 @@ void E3::transition(Automate * a, Symbole * s) {
 }
 
 void E4::transition(Automate * a, Symbole * s) {
-	switch(int(*s)) {}
+	switch(int(*s)) {
+		case INT:
+			a->push_etat(new E3);
+			a->getLexer()->Avancer();
+#ifdef VERBOSE
+			std::cout << "E4: Empile E3" << std::endl;
+#endif
+			break;
+		case OPENPAR:
+			a->push_etat(new E2);
+			a->getLexer()->Avancer();
+			a->push_symbole(a->getLexer()->Consulter());
+#ifdef VERBOSE
+			std::cout << "E4: Empile E2" << std::endl;
+#endif
+			break;
+		case EXP:
+			a->push_etat(new E7);
+			a->getLexer()->Avancer();
+#ifdef VERBOSE
+			std::cout << "E4: Empile E7" << std::endl;
+#endif
+			break;
+		default:
+			std::cerr << "E4: default" << std::endl;
+			a->kill();
+	}
 }
+
 void E5::transition(Automate * a, Symbole * s) {
 	switch(int(*s)) {}
 }
+
 void E6::transition(Automate * a, Symbole * s) {
 	switch(int(*s)) {
 		case PLUS:
@@ -154,7 +185,34 @@ void E6::transition(Automate * a, Symbole * s) {
 }
 
 void E7::transition(Automate * a, Symbole * s) {
-	switch(int(*s)) {}
+	Symbole * next = a->getLexer()->Consulter();
+	Expr * terme1;
+	Expr * terme2;
+	int somme;
+	switch(int(*next)) {
+		case PLUS:
+		case CLOSEPAR:
+		case FIN:
+#ifdef VERBOSE
+			std::cout << "E7: reduction pour : ";
+			next->affiche();
+			std::cout << std::endl;
+#endif
+			a->pop_etat();
+			a->pop_etat();
+			a->pop_etat();
+			terme1 = dynamic_cast<Expr*>(a->pop_symbole());
+			a->pop_symbole();
+			terme2 = dynamic_cast<Expr*>(a->pop_symbole());
+
+			somme = terme1->get_val()+terme2->get_val();
+			a->push_symbole(new Expr(somme));
+			a->set_resultat(somme);
+			break;
+		default:
+			std::cerr << "E7: default" << endl;
+			a->kill();
+	}
 }
 void E8::transition(Automate * a, Symbole * s) {
 	switch(int(*s)) {}
@@ -178,9 +236,14 @@ void E9::transition(Automate * a, Symbole * s) {
 			a->pop_etat();
 			a->pop_symbole();
 			tmp = a->pop_symbole();
-			val = dynamic_cast<Expr*>(tmp);
 			a->pop_symbole();
+
+			val = dynamic_cast<Expr*>(tmp);
 			a->push_symbole(tmp);
 			a->set_resultat(val->get_val());
+			break;
+		default:
+			std::cerr << "E9: default" << std::endl;
+			a->kill();
 	}
 }
