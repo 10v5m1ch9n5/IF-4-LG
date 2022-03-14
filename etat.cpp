@@ -252,7 +252,6 @@ void E8::transition(Automate * a, Symbole * s) {
 	Expr * facteur1;
 	Expr * facteur2;
 	Symbole * s1;
-	Symbole * s2;
 	Symbole * s3;
 	int produit;
 	switch(int(*next)) {
@@ -269,7 +268,7 @@ void E8::transition(Automate * a, Symbole * s) {
 			a->pop_etat();
 			a->pop_etat();
 			s1 = a->pop_symbole();
-			s2 = a->pop_symbole();
+			a->pop_symbole();
 			s3 = a->pop_symbole();
 			facteur1 = dynamic_cast<Expr*>(s1);
 			facteur2 = dynamic_cast<Expr*>(s3);
