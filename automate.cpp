@@ -4,24 +4,23 @@
 
 Automate::Automate(std::string chaine) {
 	pile.push(new E0);
-
 	lex = new Lexer(chaine);
+	pileSymbole.push(lex->Consulter());
 }
 
 void Automate::lecture(void) {
-	Symbole * s;
-	while( *(s=lex->Consulter()) != FIN) {
-		pileSymbole.push(s);
+	while( *(pileSymbole.top()) != FIN) {
 #ifdef VERBOSE
 		cout << "Transition pour : ";
 		pileSymbole.top()->affiche();
 		cout << endl;
 #endif
 		pile.top()->transition(this, pileSymbole.top());
-		lex->Avancer();
-		no_read = false;
+		if(error) break;
 	}
-	pileSymbole.push(s);
+#ifdef VERBOSE
+	cout << "Sortie boucle main !" << endl;
+#endif
 	pile.top()->transition(this, pileSymbole.top());
 }
 
@@ -54,6 +53,6 @@ void Automate::set_resultat(int r) {
 	resultat = r;
 }
 
-void Automate::noRead() {
-	no_read = true;
+void Automate::kill() {
+	error = true;
 }

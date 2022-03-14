@@ -6,7 +6,7 @@ void E0::transition(Automate * a, Symbole * s) {
 	switch(int(*s)) {
 		case INT:
 			a->push_etat(new E3);
-			a->noRead();
+			a->getLexer()->Avancer();
 #ifdef VERBOSE
 			std::cout << "E0: Empile E3" << std::endl;
 #endif
@@ -19,12 +19,15 @@ void E0::transition(Automate * a, Symbole * s) {
 			break;
 		case EXP:
 			a->push_etat(new E1);
+			a->getLexer()->Avancer();
+			a->push_symbole(a->getLexer()->Consulter());
 #ifdef VERBOSE
 			std::cout << "E0: Empile E1" << std::endl;
 #endif
 			break;
 		default:
 			std::cerr << "E0: default" << std::endl;
+			a->kill();
 	}
 }
 
@@ -50,6 +53,7 @@ void E1::transition(Automate * a, Symbole * s) {
 			break;
 		default:
 			std::cerr << "E1: default" << std::endl;
+			a->kill();
 	}
 }
 
@@ -93,15 +97,10 @@ void E3::transition(Automate * a, Symbole * s) {
 			std::cout << std::endl;
 #endif
 			tmp = a->pop_symbole();
-			tmp->affiche();
-			std::cout << "no segfault" << std::endl;
 			val = dynamic_cast<Entier*>(tmp);
 			a->pop_etat();
 			a->push_symbole(new Expr(val->get_val()));
-			a->noRead();
-#ifdef VERBOSE
-			std::cout << "E3: Reduction r5 [FIN]" << std::endl;
-#endif
+			a->set_resultat(val->get_val());
 			break;
 		default:
 			std::cerr << "E3: default" << std::endl;

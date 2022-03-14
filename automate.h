@@ -16,14 +16,15 @@ class Automate {
 		Symbole * pop_symbole(void);
 		void accepter(void);
 		void set_resultat(int);
-		void noRead(void);
+		void kill(void);
 		Lexer * getLexer(void) {return lex;};
+		void pushSymbole(Symbole*);
 	protected:
 		std::stack<Etat*> pile;
 		std::stack<Symbole*> pileSymbole;
 		Lexer * lex;
 		int resultat;
-		bool no_read = false;
+		bool error = false;
 };
 
 #endif
