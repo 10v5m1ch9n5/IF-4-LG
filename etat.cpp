@@ -46,10 +46,10 @@ void E1::transition(Automate * a, Symbole * s) {
 #endif
 			break;
 		case FIN:
-			a->accepter();
 #ifdef VERBOSE
 			std::cout << "E1: Accepter" << std::endl;
 #endif
+			a->accepter();
 			break;
 		default:
 			std::cerr << "E1: default" << std::endl;

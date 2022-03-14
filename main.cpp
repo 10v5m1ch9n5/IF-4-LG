@@ -2,9 +2,8 @@
 #include "lexer.h"
 #include "automate.h"
 
-int main(void) {
-   //string chaine("(1+34)*123");
-   string chaine("123");
+int main(int argc, char* argv[]) {
+   string chaine(argv[1]);
 
    Automate a(chaine);
    a.lecture();

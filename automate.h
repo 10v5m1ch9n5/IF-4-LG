@@ -18,7 +18,6 @@ class Automate {
 		void set_resultat(int);
 		void kill(void);
 		Lexer * getLexer(void) {return lex;};
-		void pushSymbole(Symbole*);
 	protected:
 		std::stack<Etat*> pile;
 		std::stack<Symbole*> pileSymbole;
