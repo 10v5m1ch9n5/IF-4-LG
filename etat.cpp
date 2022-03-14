@@ -70,6 +70,8 @@ void E2::transition(Automate * a, Symbole * s) {
 			break;
 		case OPENPAR:
 			a->push_etat(new E2);
+			a->getLexer()->Avancer();
+			a->push_symbole(a->getLexer()->Consulter());
 #ifdef VERBOSE
 			std::cout << "E2: Empile E2" << std::endl;
 #endif
