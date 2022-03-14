@@ -137,7 +137,6 @@ void E4::transition(Automate * a, Symbole * s) {
 			break;
 		case EXP:
 			a->push_etat(new E7);
-			a->getLexer()->Avancer();
 #ifdef VERBOSE
 			std::cout << "E4: Empile E7" << std::endl;
 #endif
