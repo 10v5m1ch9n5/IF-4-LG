@@ -108,9 +108,10 @@ void E3::transition(Automate * a, Symbole * s) {
 #endif
 			tmp = a->pop_symbole();
 			val = dynamic_cast<Entier*>(tmp);
-			a->pop_etat();
+			delete(a->pop_etat());
 			a->push_symbole(new Expr(val->get_val()));
 			a->set_resultat(val->get_val());
+			delete(tmp);
 			break;
 		default:
 			std::cerr << "E3: default" << std::endl;
@@ -211,6 +212,8 @@ void E7::transition(Automate * a, Symbole * s) {
 	Symbole * next = a->getLexer()->Consulter();
 	Expr * terme1;
 	Expr * terme2;
+	Symbole * s1;
+	Symbole * s2;
 	int somme;
 	switch(int(*next)) {
 		case PLUS:
@@ -221,16 +224,21 @@ void E7::transition(Automate * a, Symbole * s) {
 			next->affiche();
 			std::cout << std::endl;
 #endif
-			a->pop_etat();
-			a->pop_etat();
-			a->pop_etat();
-			terme1 = dynamic_cast<Expr*>(a->pop_symbole());
-			a->pop_symbole();
-			terme2 = dynamic_cast<Expr*>(a->pop_symbole());
+			delete(a->pop_etat());
+			delete(a->pop_etat());
+			delete(a->pop_etat());
+			s1 = a->pop_symbole();
+			terme1 = dynamic_cast<Expr*>(s1);
+			delete(a->pop_symbole());
+			s2 = a->pop_symbole();
+			terme2 = dynamic_cast<Expr*>(s2);
 
 			somme = terme1->get_val()+terme2->get_val();
 			a->push_symbole(new Expr(somme));
 			a->set_resultat(somme);
+
+			delete(terme1);
+			delete(terme2);
 			break;
 		case MULT:
 #ifdef VERBOSE
@@ -264,11 +272,11 @@ void E8::transition(Automate * a, Symbole * s) {
 			next->affiche();
 			std::cout << std::endl;
 #endif
-			a->pop_etat();
-			a->pop_etat();
-			a->pop_etat();
+			delete(a->pop_etat());
+			delete(a->pop_etat());
+			delete(a->pop_etat());
 			s1 = a->pop_symbole();
-			a->pop_symbole();
+			delete(a->pop_symbole());
 			s3 = a->pop_symbole();
 			facteur1 = dynamic_cast<Expr*>(s1);
 			facteur2 = dynamic_cast<Expr*>(s3);
@@ -277,6 +285,9 @@ void E8::transition(Automate * a, Symbole * s) {
 			produit = facteur1->get_val()*facteur2->get_val();
 			a->push_symbole(new Expr(produit));
 			a->set_resultat(produit);
+
+			delete(s1);
+			delete(s3);
 	}
 }
 
@@ -294,12 +305,12 @@ void E9::transition(Automate * a, Symbole * s) {
 			next->affiche();
 			std::cout << std::endl;
 #endif
-			a->pop_etat();
-			a->pop_etat();
-			a->pop_etat();
-			a->pop_symbole();
+			delete(a->pop_etat());
+			delete(a->pop_etat());
+			delete(a->pop_etat());
+			delete(a->pop_symbole());
 			tmp = a->pop_symbole();
-			a->pop_symbole();
+			delete(a->pop_symbole());
 
 			val = dynamic_cast<Expr*>(tmp);
 			a->push_symbole(tmp);

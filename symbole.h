@@ -11,7 +11,7 @@ const string Etiquettes[] = { "OPENPAR", "CLOSEPAR", "PLUS", "MULT", "INT", "EXP
 class Symbole {
    public:
       Symbole(int i, bool t=false) : ident(i), terminal(t) {  }
-      virtual ~Symbole() { }
+      virtual ~Symbole() {}
       operator int() const { return ident; }
       virtual void affiche();
       bool isTerminal(void) { return terminal; }

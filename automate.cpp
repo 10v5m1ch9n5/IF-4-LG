@@ -8,6 +8,10 @@ Automate::Automate(std::string chaine) {
 	pileSymbole.push(lex->Consulter());
 }
 
+Automate::~Automate() {
+	delete(lex);
+}
+
 void Automate::lecture(void) {
 	while( *(pileSymbole.top()) != FIN) {
 #ifdef VERBOSE
@@ -54,6 +58,12 @@ void Automate::accepter() {
 	cout << "Resultat = ";
 #endif	
 	cout << resultat << endl;
+	Etat * e1 = pile.top();
+	pile.pop();
+	Etat * e2 = pile.top();
+	pile.pop();
+	delete(e1);
+	delete(e2);
 }
 
 void Automate::set_resultat(int r) {

@@ -9,6 +9,7 @@
 class Automate {
 	public:
 		Automate(std::string);
+		~Automate();
 		void lecture(void);
 		void push_etat(Etat*);
 		void push_symbole(Symbole*);
